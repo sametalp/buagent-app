@@ -70,7 +70,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .card:active { opacity: 0.6; }
 .card .main { flex: 1; min-width: 0; }
 .card .course { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.03em; }
-.card .name { font-size: 17px; font-weight: 600; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card .name { font-size: 17px; font-weight: 600; margin-top: 1px; overflow-wrap: anywhere; }
 .card .meta { font-size: 14px; color: var(--muted); margin-top: 2px; }
 .card .side { text-align: right; flex-shrink: 0; }
 .card .when { font-size: 15px; font-weight: 600; }
