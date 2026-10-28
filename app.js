@@ -2,7 +2,7 @@
 // exams, homework, lecture changes and to-dos. The gist id comes from the link: ?d=<gist id>.
 
 const TZ = "Europe/Istanbul";
-const TITLES = { attention: "Attention", exams: "Exams", hw: "HW", lectures: "Lectures" };
+const TITLES = { attention: "Attention", exams: "Exams", hw: "HW", schedule: "Schedule", lectures: "Lectures" };
 const store = {
   get(key, fallback) {
     try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; }
@@ -136,6 +136,45 @@ function lecturesView() {
   return data.lectures.length ? data.lectures.map(lectureCard).join("") : empty("No lecture changes announced.");
 }
 
+// ---- weekly timetable: the whole week on one screen, no scrolling ----
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+const minutes = (t) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+
+function scheduleView() {
+  const slots = data.schedule || [];
+  if (!slots.length) return empty("No timetable yet.");
+  const first = Math.floor(Math.min(...slots.map((s) => minutes(s.start))) / 60);
+  const last = Math.ceil(Math.max(...slots.map((s) => minutes(s.end))) / 60);
+  const row = (t) => 2 + (minutes(t) - first * 60) / 30; // half-hour grid rows after the day header
+
+  // Istanbul's weekday (1 = Monday); on weekends the coming week is shown.
+  const today = new Date(`${dayKey(new Date())}T12:00:00Z`);
+  const dow = today.getUTCDay() || 7;
+  const monday = new Date(today.getTime() - (dow - 1) * 86400000 + (dow > 5 ? 7 * 86400000 : 0));
+  const dateOf = (day) => new Date(monday.getTime() + (day - 1) * 86400000).toISOString().slice(0, 10);
+  const nowMin = minutes(fmtTime(new Date()));
+
+  let html = `<div class="sched" style="--rows:${(last - first) * 2}">`;
+  DAYS.forEach((d, i) => {
+    html += `<div class="sched-day${i + 1 === dow ? " today" : ""}" style="grid-column:${i + 2}">${d}</div>`;
+  });
+  for (let h = first; h < last; h++) {
+    const r = 2 + (h - first) * 2;
+    html += `<div class="sched-hour" style="grid-row:${r}">${h}:00</div><div class="sched-line" style="grid-row:${r}"></div>`;
+  }
+  for (const s of slots) {
+    const change = data.lectures.find((l) => l.course === s.course && l.date === dateOf(s.day));
+    const isToday = s.day === dow;
+    const live = isToday && nowMin >= minutes(s.start) && nowMin < minutes(s.end);
+    const cls = ["slot", isToday ? "today" : "", live ? "live" : "", change ? "changed" : ""].join(" ").trim();
+    html += `<div class="${cls}" style="grid-column:${s.day + 1};grid-row:${row(s.start)} / ${row(s.end)}"
+      ${change ? `data-open="lecture:${esc(change.id)}" role="button"` : ""}>
+      <b>${esc(s.course)}</b><span>${esc(s.room)}</span>
+      ${change ? `<em>${esc(change.type)}</em>` : ""}</div>`;
+  }
+  return html + "</div>";
+}
+
 function render() {
   $("title").textContent = TITLES[tab];
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === tab));
@@ -144,7 +183,7 @@ function render() {
   let html = loadError ? `<div class="error">${esc(loadError)}</div>` : "";
   if (!data) { $("list").innerHTML = html || empty("Loading…"); return; }
   html += { attention: attentionView, exams: () => listView("exams", "No upcoming exams."),
-            hw: () => listView("hw", "No upcoming deadlines."), lectures: lecturesView }[tab]();
+            hw: () => listView("hw", "No upcoming deadlines."), schedule: scheduleView, lectures: lecturesView }[tab]();
   $("list").innerHTML = html;
 }
 

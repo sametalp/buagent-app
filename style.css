@@ -162,3 +162,39 @@ body::before {
   background: var(--bg);
   z-index: 15;
 }
+
+/* Schedule: a week grid sized to the space between the header and the tab bar. */
+.sched {
+  display: grid;
+  grid-template-columns: 30px repeat(5, minmax(0, 1fr));
+  grid-template-rows: 22px repeat(var(--rows), minmax(0, 1fr));
+  column-gap: 4px;
+  row-gap: 0;
+  height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 196px);
+  min-height: 420px;
+}
+.sched-day { grid-row: 1; text-align: center; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.sched-day.today { color: var(--accent); }
+.sched-hour { grid-column: 1; font-size: 10px; color: var(--muted); transform: translateY(-6px); }
+.sched-line { grid-column: 2 / -1; border-top: 0.5px solid var(--line); }
+.slot {
+  margin: 2px 0;
+  border-radius: 10px;
+  background: var(--card);
+  padding: 4px 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1px;
+  overflow: hidden;
+  z-index: 1;
+}
+.slot b { font-size: 13px; color: var(--accent); letter-spacing: -0.01em; }
+.slot span { font-size: 10.5px; color: var(--muted); line-height: 1.2; overflow-wrap: anywhere; }
+.slot em { font-style: normal; font-size: 10px; font-weight: 600; color: var(--warn); }
+.slot.today { box-shadow: inset 0 0 0 1px var(--accent-soft); }
+.slot.live { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.slot.live span { color: var(--text); }
+.slot.changed { box-shadow: inset 0 0 0 1px var(--warn); }
