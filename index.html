@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="BuAgent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <title>BuAgent</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="icon" href="icon-180.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="screen">
+    <header class="top">
+      <h1 id="title">Attention</h1>
+      <div class="sub"><span id="updated"></span><button id="refresh" aria-label="Refresh">↻</button></div>
+    </header>
+    <div id="list"></div>
+  </main>
+
+  <section id="detail" class="detail" aria-hidden="true">
+    <header class="detail-bar">
+      <button id="back" class="back">‹ <span id="back-label">Back</span></button>
+    </header>
+    <div id="detail-body"></div>
+  </section>
+
+  <div id="sheet" class="sheet" aria-hidden="true">
+    <div class="sheet-panel">
+      <p class="sheet-title">Mark as done?</p>
+      <p class="sheet-text" id="sheet-text"></p>
+      <button id="sheet-confirm" class="sheet-btn primary">Mark as Done</button>
+      <button id="sheet-cancel" class="sheet-btn">Cancel</button>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button data-tab="attention" class="active"><svg viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3Zm0 5.5 5.6 9.5H6.4L12 8.5Zm-1 2.5v4h2v-4h-2Zm0 5v2h2v-2h-2Z"/></svg><span>Attention</span></button>
+    <button data-tab="exams"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8.5 12v1.8h7V12h-7Zm0 3.5v1.8h7v-1.8h-7Z"/></svg><span>Exams</span></button>
+    <button data-tab="hw"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4V4Zm2 2v12h12V6H6Zm2.3 6.2 1.4-1.4 1.8 1.8 3.8-3.8 1.4 1.4-5.2 5.2-3.2-3.2Z"/></svg><span>HW</span></button>
+    <button data-tab="lectures"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3V5Zm2 2v7h14V7H5Zm3 11h8v2H8v-2Z"/></svg><span>Lectures</span></button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
