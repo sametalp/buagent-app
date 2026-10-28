@@ -1,31 +1,17 @@
 :root {
-  --bg: #f2f2f7;
-  --card: #ffffff;
-  --text: #1c1c1e;
-  --muted: #6e6e73;
-  --line: #e5e5ea;
-  --accent: #0a66d8;
-  --accent-soft: #e6effc;
-  --warn: #c2410c;
-  --warn-soft: #fff1e8;
-  --tab: rgba(249, 249, 251, 0.92);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #000000;
-    --card: #1c1c1e;
-    --text: #f2f2f7;
-    --muted: #98989f;
-    --line: #2c2c2e;
-    --accent: #4c9bff;
-    --accent-soft: #14284a;
-    --warn: #ff9f5a;
-    --warn-soft: #3a2314;
-    --tab: rgba(22, 22, 24, 0.92);
-    --shadow: none;
-  }
+  /* Always dark, whatever the phone's appearance setting. */
+  color-scheme: dark;
+  --bg: #000000;
+  --card: #1c1c1e;
+  --text: #f2f2f7;
+  --muted: #98989f;
+  --line: #2c2c2e;
+  --accent: #4c9bff;
+  --accent-soft: #14284a;
+  --warn: #ff9f5a;
+  --warn-soft: #3a2314;
+  --tab: rgba(22, 22, 24, 0.92);
+  --shadow: none;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -164,3 +150,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .tabs button { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 5px; color: var(--muted); font-size: 10px; font-weight: 500; }
 .tabs svg { width: 25px; height: 25px; fill: currentColor; }
 .tabs button.active { color: var(--accent); }
+
+/* The status bar is translucent: keep scrolled content from showing behind the clock. */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top);
+  background: var(--bg);
+  z-index: 15;
+}
