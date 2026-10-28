@@ -174,7 +174,7 @@ function openDetail(ref) {
     const i = data.items.find((x) => x.key === id);
     if (!i) return;
     const at = new Date(i.at);
-    const label = i.tab === "hw" ? "Deadline" : "Date";
+    const label = i.kind === "deadline" ? "Deadline" : "Date";
     head = `<div class="d-course">${esc(i.course)}</div><div class="d-name">${esc(i.name)}</div><div class="facts">
       ${fact(label, fmtDay(at))}${fact("Time", i.all_day ? "All day" : fmtTime(at))}
       ${i.tab === "exams" ? fact("Location", i.location || "–") : ""}</div>
